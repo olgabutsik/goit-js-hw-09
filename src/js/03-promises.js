@@ -6,11 +6,10 @@ const stepDelay = document.querySelector('input[name="step"]');
 const amount = document.querySelector('input[name="amount"]');
 const submitBtn = document.querySelector('button[type="submit"]');
 
-submitBtn.addEventListener('submit', onSubmit);
+form.addEventListener('submit', onSubmit);
 
-let delay = firstDelay.value;
-let step = stepDelay.value;
-let quantity = amount.value;
+
+
 
 function createPromise(position, delay) {
   return new Promise((resolve, reject) => {
@@ -25,9 +24,12 @@ const shouldResolve = Math.random() > 0.3;
   });
 
 }
-
-function onSubmit() {
-  
+console.log(123)
+function onSubmit(e) {
+  e.preventDefault();
+  let delay = Number(firstDelay.value);
+  let step = Number(stepDelay.value);
+  let quantity = Number(amount.value);
   for (let i = 1; i <= quantity; i +=1){
     createPromise(i, delay)
       .then(({ position, delay }) => {
@@ -36,8 +38,9 @@ function onSubmit() {
       .catch(({ position, delay }) => {
         Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
       });
+    delay += step;
   }
-  delay += step;
+  
 }
 
 
